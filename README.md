@@ -1,0 +1,6 @@
+smallfry
+========
+
+```
+python -m SimpleHTTPServer
+```
