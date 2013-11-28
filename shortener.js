@@ -7,7 +7,7 @@ var store = exports.sessionStorage,
   $msg = $('.js-messaging').first(),
   $code = $('code').first(),
   api = 'http://tgam.ca/shorten/json/',
-  path = '';
+  path = '?click=tglobe';
 
 $form.on( 'submit', shorten.bind( $form ) );
 $code.on( 'click', edit );
@@ -24,13 +24,17 @@ function shorten( e ) {
   e.preventDefault();
   var url = cleanUrl( $url.val() ),
       slug = $.trim( $slug.val() ),
-      d = { url: url, slug: slug };
+      data = {
+        url: url,
+        slug: slug
+      };
 
-  if ( !url ) {
+  if ( !url || url === path ) {
     return;
   }
+
   console.log(url);
-  $.ajax( { dataType: 'jsonp', url: api, data: d } )
+  $.ajax( { dataType: 'jsonp', url: api, data: data } )
     .done( respond )
     .fail( facepalm );
 }
