@@ -1,39 +1,60 @@
+
 (function( exports, $ ) {
 
-var store = exports.sessionStorage,
+'use strict';
+
+var store = exports.localStorage,
   $form = $('form').first(),
-  $url = $form.find('#url'),
-  $slug = $form.find('#slug'),
+  $url = $('#url'),
+  $slug = $('#slug'),
   $msg = $('.js-messaging').first(),
   $code = $('code').first(),
+  $ok = $code.find(' ~ button').first(),
   api = 'http://tgam.ca/shorten/json/',
-  path = '?click=tglobe';
+  defaultPath = '?edit=me';
 
+var _path = function() {
+  return store.getItem('TheCodes') || defaultPath;
+};
+$code.text( _path() );
 $form.on( 'submit', shorten.bind( $form ) );
 $code.on( 'click', edit );
+$ok.on( 'click', save );
 
 function cleanUrl( url ) {
-  return $.trim( url.split('?')[0].split('#')[0] ) + path;
+  return $.trim( url.split('?')[0].split('#')[0] ) + _path();
 }
 
-function edit( evt ) {
-  var $thing = $(evt.currentTarget);
+function edit() {
+  $code
+    .attr('contenteditable', true)
+    .focus();
+  $ok.removeClass('hidden');
+}
+
+function save() {
+  $code.attr('contenteditable', false);
+  $ok.addClass('hidden');
+  var codes = $code.text();
+  if ( $.trim( codes ) === '' ) {
+    codes = defaultPath;
+    $code.text( defaultPath );
+  }
+  console.log('Saving: ', codes);
+  store.setItem('TheCodes', codes);
 }
 
 function shorten( e ) {
   e.preventDefault();
   var url = cleanUrl( $url.val() ),
       slug = $.trim( $slug.val() ),
-      data = {
-        url: url,
-        slug: slug
-      };
+      data = { url: url, slug: slug },
+      editing = ( $code.attr('contenteditable') === true );
 
-  if ( !url || url === path ) {
+  if ( editing || _path() === defaultPath ) {
     return;
   }
 
-  console.log(url);
   $.ajax( { dataType: 'jsonp', url: api, data: data } )
     .done( respond )
     .fail( facepalm );
