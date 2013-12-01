@@ -2,13 +2,24 @@ body {
   padding: 2em;
 }
 * {
-  font-family: 'Bitter' !important;
+  font-family: 'Roboto' !important;
+}
+.lead {
+  font-size: 1.33333333333333em;
+  font-weight: 300;
 }
 .jumbotron h1 {
-  font-size: 48px;
+  font-size: 42px;
+}
+.form-control-url {
+  font-size: 1em;
+  font-weight: 300;
+}
+strong {
+  font-weight: 700;
 }
 code {
-  font-weight: 300;
+  font-weight: 500;
   font-size: 1em;
   border: 2px solid transparent;
   -webkit-transition: all 0.1s ease-out;
@@ -16,6 +27,16 @@ code {
   -ms-transition: all 0.1s ease-out;
   -o-transition: all 0.1s ease-out;
   transition: all 0.1s ease-out;
+
+  -ms-word-break: break-all;
+  word-break: break-all;
+  /* Non standard for webkit */
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+
 }
 code.active,
 code:hover {

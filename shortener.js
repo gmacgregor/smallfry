@@ -3,29 +3,54 @@
 
 'use strict';
 
-var store = exports.localStorage,
-  $form = $('form').first(),
+var module = {};
+var api = 'http://tgam.ca/shorten/json/',
+  defaultPath = '?edit=me',
+  store = exports.localStorage,
+  storeKey = 'tgamca:shorten';
+
+var $form = $('form').first(),
   $url = $('#url'),
   $slug = $('#slug'),
   $msg = $('.js-messaging').first(),
   $code = $('code').first(),
-  $ok = $code.find(' ~ button').first(),
-  api = 'http://tgam.ca/shorten/json/',
-  defaultPath = '?edit=me';
+  $ok = $code.find(' ~ button').first();
 
-var _path = function() {
-  return store.getItem('TheCodes') || defaultPath;
-};
-$code.text( _path() );
-$form.on( 'submit', shorten.bind( $form ) );
-$code.on( 'click', edit );
-$ok.on( 'click', save );
-
-function cleanUrl( url ) {
-  return $.trim( url.split('?')[0].split('#')[0] ) + _path();
+function init() {
+    $code
+      .text( path() )
+      .on( 'click', edit )
+      .on( 'keydown', wiretap );
+    $ok.on( 'click', save );
+    $form.on( 'submit', shorten.bind( $form ) );
 }
 
-function edit() {
+module = { init: init };
+return module;
+
+function path( val ) {
+  if ( !val ) {
+    return store.getItem( storeKey ) || defaultPath;
+  }
+  console.log('Saving: ', val);
+  store.setItem( storeKey, val );
+}
+
+function cleanUrl( url ) {
+  return $.trim( url.split('?')[0].split('#')[0] ) + path();
+}
+
+function wiretap( e ) {
+  if ( e.keyCode === 13 )  {
+    e.preventDefault();
+    e.stopPropagation();
+    save();
+    return false;
+  }
+  return true;
+}
+
+function edit( e ) {
   $code
     .attr('contenteditable', true)
     .focus();
@@ -34,14 +59,13 @@ function edit() {
 
 function save() {
   $code.attr('contenteditable', false);
+  var val = $.trim( $code.text() );
   $ok.addClass('hidden');
-  var codes = $code.text();
-  if ( $.trim( codes ) === '' ) {
-    codes = defaultPath;
-    $code.text( defaultPath );
+  if ( val === '' ) {
+    val = defaultPath;
+    $code.text( val );
   }
-  console.log('Saving: ', codes);
-  store.setItem('TheCodes', codes);
+  path( val );
 }
 
 function shorten( e ) {
@@ -51,7 +75,7 @@ function shorten( e ) {
       data = { url: url, slug: slug },
       editing = ( $code.attr('contenteditable') === true );
 
-  if ( editing || _path() === defaultPath ) {
+  if ( editing || path() === defaultPath ) {
     return;
   }
 
@@ -80,4 +104,4 @@ function party( url ) {
   $msg.addClass('alert alert-success').html('<p>Success! <strong>' + url + '</strong></p>');
 }
 
-})( window, window.jQuery);
+})( window, window.jQuery).init();
