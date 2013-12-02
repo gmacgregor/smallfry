@@ -29,9 +29,9 @@ module = { init: init };
 return module;
 
 function path( val ) {
-  var k = store.getItem( storeKey );
   if ( !val ) {
-    if ( null !== k ) {
+    var k = store.getItem( storeKey );
+    if ( k !== null ) {
       return k;
     } else {
       return defaultPath;
