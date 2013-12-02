@@ -1,12 +1,14 @@
 body {
   padding: 2em;
-}
-* {
-  font-family: 'Roboto' !important;
+  font-family: 'Roboto';
 }
 .lead {
   font-size: 1.33333333333333em;
   font-weight: 300;
+}
+.jumbotron {
+  background-color: #fff;
+  font-size: 24px;
 }
 .jumbotron h1 {
   font-size: 42px;
@@ -15,10 +17,15 @@ body {
   font-size: 1em;
   font-weight: 300;
 }
+.btn-shorten {
+  font-weight: 300;
+  font-size: 22px;
+}
 strong {
   font-weight: 700;
 }
 code {
+  font-family: 'Roboto';
   font-weight: 500;
   font-size: 1em;
   border: 2px solid transparent;

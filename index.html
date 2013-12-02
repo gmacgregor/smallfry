@@ -3,6 +3,10 @@
 <head>
 <title>URL Shortener</title>
 <link rel="stylesheet" href="./bootstrap.min.css" />
+<!--
+<link rel="stylesheet" href="./bootstrap.css" />
+<link rel="stylesheet" href="./bootstrap-theme.css" />
+-->
 <link rel="stylesheet" href="./styles.css" />
 <!-- <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
 <link href='http://fonts.googleapis.com/css?family=Roboto:300,500,700' rel='stylesheet' type='text/css'>
@@ -13,9 +17,8 @@
 <div class="row">
 
 <div class="jumbotron text-center">
-  <p class="lead">Add <code></code><button class="btn btn-primary btn-ok hidden">Ok</button><br>
-  to the end of this tgam.ca shortened url:</p>
   <div class="js-messaging"></div>
+  <p class="lead">Add <code></code><button class="btn btn-primary btn-ok hidden">Ok</button> to</p>
   <form class="form-horizontal" role="form">
     <div class="form-group">
       <label for="url" class="col-sm-2 control-label hidden">URL</label>
@@ -32,7 +35,7 @@
     </div>
     <div class="form-group">
       <!-- <div class="col-sm-offset-2 col-sm-10"> -->
-        <button type="submit" class="btn btn-lg btn-default">Shorten</button>
+        <p class="lead">&amp; <button type="submit" class="btn btn-lg btn-primary btn-shorten">shorten with tgam.ca</button></p>
       <!-- </div> -->
     </div>
   </form>

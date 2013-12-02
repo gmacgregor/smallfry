@@ -36,12 +36,13 @@ function path( val ) {
   store.setItem( storeKey, val );
 }
 
-function cleanUrl( url ) {
-  return $.trim( url.split('?')[0].split('#')[0] ) + path();
+function cleanUrl() {
+  return $.trim( $url.val().split('?')[0].split('#')[0] ) + path();
 }
 
 function wiretap( e ) {
   if ( e.keyCode === 13 )  {
+    // user has pressed enter
     e.preventDefault();
     e.stopPropagation();
     save();
@@ -70,14 +71,17 @@ function save() {
 
 function shorten( e ) {
   e.preventDefault();
-  var url = cleanUrl( $url.val() ),
-      slug = $.trim( $slug.val() ),
-      data = { url: url, slug: slug },
-      editing = ( $code.attr('contenteditable') === true );
+  var editing = ( $code.attr('contenteditable') == 'true' ),
+    defaultBehaviour = ( path() == defaultPath ),
+    noUrl = $.trim( $url.val() ) === '';
 
-  if ( editing || path() === defaultPath ) {
+  if ( noUrl || editing || defaultBehaviour ) {
     return;
   }
+
+  var url = cleanUrl(),
+    slug = $.trim( $slug.val() ),
+    data = { url: url, slug: slug };
 
   $.ajax( { dataType: 'jsonp', url: api, data: data } )
     .done( respond )
@@ -93,15 +97,19 @@ function respond( resp ) {
 }
 
 function facepalm() {
+ var html = '<p class="has-error">There was an error shortening that url. Please try again.</p>';
  $msg
   .addClass( 'alert alert-error' )
-  .html( '<p class="has-error">There was an error shortening that url. Please try again.</p>' );
+  .html( html );
 }
 
 function party( url ) {
   $url.val('');
   $slug.val('');
-  $msg.addClass('alert alert-success').html('<p>Success! <strong>' + url + '</strong></p>');
+  var html = '<p><span class="glyphicon glyphicon-ok"></span> Success! <strong>{{ url }}</strong></p>';
+  $msg
+    .addClass('alert alert-success')
+    .html( html.replace('{{ url }}', url) );
 }
 
 })( window, window.jQuery).init();
