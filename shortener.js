@@ -29,8 +29,13 @@ module = { init: init };
 return module;
 
 function path( val ) {
+  var k = store.getItem( storeKey );
   if ( !val ) {
-    return store.getItem( storeKey ) || defaultPath;
+    if ( null !== k ) {
+      return k;
+    } else {
+      return defaultPath;
+    }
   }
   console.log('Saving: ', val);
   store.setItem( storeKey, val );
