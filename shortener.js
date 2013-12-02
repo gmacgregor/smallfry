@@ -5,7 +5,7 @@
 
 var module = {};
 var api = 'http://tgam.ca/shorten/json/',
-  defaultPath = '?edit=me',
+  defaultPath = '?click=tglobe',
   store = exports.localStorage,
   storeKey = 'tgamca:shorten';
 
